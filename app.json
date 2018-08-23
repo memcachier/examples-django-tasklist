@@ -1,0 +1,13 @@
+{
+  "name": "MemCachier Django Tutorial",
+  "description": "Python Django (2.1) app for a tutorial on using Django, MemCachier and Heroku together",
+  "keywords": ["python", "django", "memcache", "memcachier", "caching", "tutorial", "performance" ],
+  "logo": "https://www.memcachier.com/assets/logo-large.png",
+  "image": "heroku/python",
+  "website": "https://www.memcachier.com",
+  "repository": "https://github.com/memcachier/examples-django2",
+  "addons": [ "heroku-postgresql:hobby-dev", "memcachier" ],
+  "scripts": {
+    "postdeploy": "python manage.py migrate"
+  }
+}
