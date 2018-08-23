@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+
+<head>
+  <meta charset="utf-8">
+  <title>MemCachier Django tutorial</title>
+  <!-- Fonts -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css"
+        rel='stylesheet' type='text/css' />
+  <!-- Bootstrap CSS -->
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        rel="stylesheet" />
+</head>
+
+<body>
+  <div class="container">
+    <!-- New Task Card -->
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">New Task</h5>
+
+        <form action="add" method="POST">
+          {% csrf_token %}
+          <div class="form-group">
+            <input type="text" class="form-control" placeholder="Task Name"
+                   name="name" required>
+          </div>
+          <button type="submit" class="btn btn-default">
+            <i class="fa fa-plus"></i> Add Task
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Current Tasks -->
+    {% if tasks %}
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Current Tasks</h5>
+
+        <table class="table table-striped">
+          {% for task in tasks %}
+          <tr>
+            <!-- Task Name -->
+            <td class="table-text">{{ task.name }}</td>
+            <!-- Delete Button -->
+            <td>
+              <form action="remove" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="id" value="{{ task.id }}">
+                <button type="submit" class="btn btn-danger">
+                  <i class="fa fa-trash"></i> Delete
+                </button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </table>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+
+  <!-- Bootstrap related JavaScript -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+
+</html>
