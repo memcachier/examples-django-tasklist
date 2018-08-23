@@ -19,10 +19,12 @@ def index(request):
 def add(request):
     item = Task(name=request.POST["name"])
     item.save()
+    cache.set(TASKS_KEY, Task.objects.order_by("id"))
     return redirect("/")
 
 def remove(request):
     item = Task.objects.get(id=request.POST["id"])
     if item:
         item.delete()
+        cache.set(TASKS_KEY, Task.objects.order_by("id"))
     return redirect("/")
