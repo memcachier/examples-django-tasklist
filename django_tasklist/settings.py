@@ -25,8 +25,7 @@ SECRET_KEY = '@*7(c@-zp5mx)*f08cpdd^(c@9uce%1_4e+blv@ltg*995i55^'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -76,8 +75,14 @@ WSGI_APPLICATION = 'django_tasklist.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': '<username>$task_list',
+        'USER': '<username>',
+        'PASSWORD': '<mysql_password>',
+        'HOST': '<username>.mysql.pythonanywhere-services.com',
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        },
     }
 }
 
