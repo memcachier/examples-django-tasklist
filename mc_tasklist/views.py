@@ -1,12 +1,21 @@
-from django.views.decorators.cache import cache_page
 from django.template.context_processors import csrf
 from django.shortcuts import render_to_response, redirect
 from mc_tasklist.models import Task
 from django.core.cache import cache
-from django.utils.cache import learn_cache_key
 import time
+import random
+import string
+from django.views.decorators.cache import cache_page
+from django.utils.cache import learn_cache_key
 
-TASKS_KEY = "tasks.all"
+
+def _hash(size=16, chars=string.ascii_letters + string.digits):
+    return ''.join(random.choice(chars) for _ in range(size))
+
+def _new_tasks_key():
+    return 'tasks.all.' + _hash()
+
+TASKS_KEY = _new_tasks_key()
 VIEW_KEY = ""
 
 @cache_page(None)
@@ -18,6 +27,7 @@ def index(request):
         cache.set(TASKS_KEY, tasks)
     c = {'tasks': tasks}
     c.update(csrf(request))
+
     response = render_to_response('index.html', c)
     global VIEW_KEY
     VIEW_KEY = learn_cache_key(request, response)
@@ -26,7 +36,8 @@ def index(request):
 def add(request):
     item = Task(name=request.POST["name"])
     item.save()
-    cache.set(TASKS_KEY, Task.objects.order_by("id"))
+    global TASKS_KEY
+    TASKS_KEY = _new_tasks_key()
     cache.delete(VIEW_KEY)
     return redirect("/")
 
@@ -34,6 +45,7 @@ def remove(request):
     item = Task.objects.get(id=request.POST["id"])
     if item:
         item.delete()
-        cache.set(TASKS_KEY, Task.objects.order_by("id"))
+        global TASKS_KEY
+        TASKS_KEY = _new_tasks_key()
         cache.delete(VIEW_KEY)
     return redirect("/")
