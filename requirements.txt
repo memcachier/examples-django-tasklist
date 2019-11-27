@@ -1,8 +1,9 @@
 dj-database-url==0.5.0
-Django==2.1
+Django==2.2.7
+django-bmemcached==0.2.4
 django-heroku==0.3.1
-gunicorn==19.9.0
-psycopg2==2.7.5
-pylibmc==1.5.2
-pytz==2018.5
+gunicorn==20.0.2
+psycopg2==2.8.4
+python-binary-memcached==0.28.0
+pytz==2019.3
 whitenoise==4.0
